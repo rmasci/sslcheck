@@ -9,9 +9,10 @@ Sslcheck takes two parameters -i <ip address> -p <port> -d <dns name>.  The -i i
 perform any dns lookups, while the -d is manditory. The -p is for servers that might be running on a port other than 443.
 
 Sslcheck is written in Go and should compile without the need of additional packages.
-Example:<br>
-  ] $ ./sslcheck -d www.google.com<br>
-  Client connected to: 74.125.137.99:443<br>
+Example:
+<pre>
+  ] $ ./sslcheck -d www.google.com
+  Client connected to: 74.125.137.99:443
   Cert Checks OK
   Server key information:
     CN:	 www.google.com
@@ -28,4 +29,4 @@ Example:<br>
   Issued by:
 	  Thawte SGC CA
 	  []
-	  [Thawte Consulting (Pty) Ltd.]
+	  [Thawte Consulting (Pty) Ltd.]</pre>
