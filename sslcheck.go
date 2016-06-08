@@ -66,27 +66,25 @@ func main() {
 		fmt.Printf("Cert Checks OK\n")
 	}
 	state := conn.ConnectionState()
-	i := 0
-	for _, v := range state.PeerCertificates {
-		if i == 0 {
-			fmt.Println("Server key information:")
-			fmt.Printf("\tCN:\t %v\n\tOU:\t %v\n\tOrg:\t %v\n", v.Subject.CommonName, v.Subject.OrganizationalUnit, v.Subject.Organization)
-			fmt.Printf("\tCity:\t %v\n\tState:\t %v\n\tCountry: %v\n", v.Subject.Locality, v.Subject.Province, v.Subject.Country)
-			fmt.Printf("SSL Certificate Valid:\n\tFrom:\t %v\n\tTo:\t %v\n", v.NotBefore, v.NotAfter)
-			fmt.Printf("Valid Certificate DNS:\n")
-			if len(v.DNSNames) >= 1 {
+	for i, v := range state.PeerCertificates {
+		switch i {
+			case 0:
+				fmt.Println("Server key information:")
+				fmt.Printf("\tCN:\t %v\n\tOU:\t %v\n\tOrg:\t %v\n", v.Subject.CommonName, v.Subject.OrganizationalUnit, v.Subject.Organization)
+				fmt.Printf("\tCity:\t %v\n\tState:\t %v\n\tCountry: %v\n", v.Subject.Locality, v.Subject.Province, v.Subject.Country)
+				fmt.Printf("SSL Certificate Valid:\n\tFrom:\t %v\n\tTo:\t %v\n", v.NotBefore, v.NotAfter)
+				fmt.Printf("Valid Certificate DNS:\n")
+				if len(v.DNSNames) >= 1 {
 				for dns := range v.DNSNames {
 					fmt.Printf("\t%v\n", v.DNSNames[dns])
 				}
-			} else {
-				fmt.Printf("\t%v\n", v.Subject.CommonName)
-			}
-			i++
-		} else if i == 1 {
-			fmt.Printf("Issued by:\n\t%v\n\t%v\n\t%v\n", v.Subject.CommonName, v.Subject.OrganizationalUnit, v.Subject.Organization)
-			i++
-		} else {
-			break
+				} else {
+					fmt.Printf("\t%v\n", v.Subject.CommonName)
+				}
+			case 1:
+				fmt.Printf("Issued by:\n\t%v\n\t%v\n\t%v\n", v.Subject.CommonName, v.Subject.OrganizationalUnit, v.Subject.Organization)
+			default:
+				break
 		}
 	}
 
