@@ -11,15 +11,13 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/rmasci/verbose"
 	flag "github.com/spf13/pflag"
 )
 
 var runAs = filepath.Base(os.Args[0])
 var version string
-
-type Verb struct {
-	v bool
-}
+var verb verbose.Verb
 
 // Usage is what is run if the right parameters are not met upon startup.
 func Usage() {
@@ -32,13 +30,12 @@ func Usage() {
 func main() {
 	var ipAddress, domainName, port, passedPort string
 	var help bool
-	var verb Verb
 	// define flags passed at runtime, and assign them to the variables defined above
 	flag.StringVarP(&ipAddress, "ip", "i", "", "IP Address")
 	flag.StringVarP(&domainName, "domain", "d", "", "Domain Name")
 	flag.StringVarP(&port, "port", "p", "443", "Port Number")
 	flag.BoolVarP(&help, "help", "h", false, "Help")
-	flag.BoolVarP(&verb.v, "verbose", "v", false, "Verbose")
+	flag.BoolVarP(&verb.V, "verbose", "v", false, "Verbose")
 	flag.Parse()
 	if help {
 		Usage()
@@ -58,7 +55,7 @@ func main() {
 		passedPort = port
 	}
 	// TODO make this work.
-	
+
 	// Here we strip off the https:// part - User might have cut / pasted it from browser. If port is not set, set it to 443
 	if strings.HasPrefix(domainName, "https://") {
 		if passedPort == "" {
@@ -87,14 +84,14 @@ func main() {
 	}
 
 	if ipAddress == "" {
-		ip, err := net.LookupHost(domainName)
+		ip, err := net.ResolveIPAddr("ip4", domainName)
 		if err != nil {
 			fmt.Printf("Could not resolve domain name, %v.\n\n", domainName)
 			fmt.Printf("Either supply a valid domain name or use the -i switch to supply the ip address.\n")
 			fmt.Printf("Domain name lookups are not performed when the user provides the ip address.\n")
 			os.Exit(1)
 		}
-		ipAddress = ip[0] + ":" + port
+		ipAddress = ip.IP.String() + ":" + port
 	} else {
 		ipAddress = ipAddress + ":" + port
 	}
@@ -158,16 +155,4 @@ func main() {
 		}
 	}
 
-}
-
-func (verb *Verb) Println(a ...any) {
-	if verb {
-		fmt.Println(a...)
-	}
-}
-
-func (verb *Verb) Printf(format string, a ...any) {
-	if verb {
-		fmt.Printf(format, a...)
-	}
 }

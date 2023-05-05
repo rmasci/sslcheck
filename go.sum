@@ -1,2 +1,4 @@
+github.com/rmasci/verbose v0.0.4 h1:lyxxBWKtjnXnqgzRg8Fv/7oQUpGp27IPAYK7cJ/GHOA=
+github.com/rmasci/verbose v0.0.4/go.mod h1:CHrAXmYbk5kTmZMJuosvnM8J2GfLsCb9sPyHmepDx7c=
 github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
 github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
